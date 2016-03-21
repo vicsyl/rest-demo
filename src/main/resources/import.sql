@@ -1,0 +1,5 @@
+insert into email_preference_item(preference_group, name) values ('Content', 'Hollywood')
+insert into email_preference_item(preference_group, name) values ('Content', 'Bollywood')
+insert into email_preference_item(preference_group, name) values ('Content', 'Jazwood')
+insert into email_preference_item(name) values ('Promo offers')
+insert into email_preference_item(name) values ('Service updates')

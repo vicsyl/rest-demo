@@ -1,13 +1,18 @@
 package org.virutor.domain;
 
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
+import org.virutor.controller.EmailPreferenceController;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Collection;
-import java.util.Map;
+import javax.persistence.ManyToMany;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -18,11 +23,6 @@ public class User {
     Content → Hollywood, Bollywood, Jazwood; Promo offers and Service updates.
     */
 
-    public static final Map<Long, User> users = ImmutableMap.of(
-            1L, of(1).setEmail("vicsyl@seznam.cz").setSalutation("Mr.").setName("Venca").setEmailPreferences(EmailPreferenceEntity.preferenceEntityMap),
-            2L, of(2).setEmail("mr.vaclav.vavra@gmail.com").setSalutation("Mrs.").setName("Kata").setEmailPreferences(EmailPreferenceEntity.preferenceEntityMap),
-            10L, of(11).setEmail("mr.vaclav.vavra@gmail.com").setSalutation("Mrs.").setName("Kata").setEmailPreferences(EmailPreferenceEntity.preferenceEntityMap)
-    );
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,17 +30,19 @@ public class User {
     private String name;
     private String salutation;
     private String email;
-    //private Map<String, Collection<EmailPreferenceEntity>> emailPreferences;
 
-    public static User of(long id) {
-        return new User(id);
+    //@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
+    private Set<EmailPreferenceItem> emailPreferences;
+
+    public static User createUser(String salutation, String name, String email, EmailPreferenceItem... emailPreferences) {
+        User user = new User();
+        user.name = name;
+        user.salutation = salutation;
+        user.email = email;
+        user.emailPreferences = new HashSet(Arrays.asList(emailPreferences));
+        return user;
     }
-
-    public User(long id) {
-        this.id = id;
-    }
-
-    User() {}
 
     public Long getId() {
         return id;
@@ -58,10 +60,6 @@ public class User {
         return salutation;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public User setName(String name) {
         this.name = name;
         return this;
@@ -72,19 +70,19 @@ public class User {
         return this;
     }
 
-    public User setEmail(String email) {
-        this.email = email;
-        return this;
+    public String getEmail() {
+        return email;
     }
-/*
-    public Map<String, Collection<EmailPreferenceEntity>> getEmailPreferences() {
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<EmailPreferenceItem> getEmailPreferences() {
         return emailPreferences;
     }
-*/
-    public User setEmailPreferences(Map<String, Collection<EmailPreferenceEntity>> emailPreferences) {
-        //this.emailPreferences = emailPreferences;
-        return this;
+
+    public void setEmailPreferences(Set<EmailPreferenceItem> emailPreferences) {
+        this.emailPreferences = emailPreferences;
     }
-
-
 }
