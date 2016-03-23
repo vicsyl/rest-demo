@@ -1,9 +1,5 @@
 package org.virutor.domain;
 
-import com.google.common.collect.ImmutableList;
-import org.virutor.controller.EmailPreferenceController;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,18 +7,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @Entity
 public class User {
-
-    /*
-    name, salutation, email and email preferences.
-    Email preferences denote whether the user is interested in obtaining newsletters from the following areas:
-    Content → Hollywood, Bollywood, Jazwood; Promo offers and Service updates.
-    */
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +20,6 @@ public class User {
     private String salutation;
     private String email;
 
-    //@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ManyToMany
     private Set<EmailPreferenceItem> emailPreferences;
 
